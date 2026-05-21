@@ -1,0 +1,38 @@
+[project]
+name = "reddit-universal-scraper"
+version = "0.1.0"
+description = "A full-featured Reddit scraper with analytics dashboard, REST API, scheduled scraping, plugins, and more."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = [
+    "pandas",
+    "requests",
+    "aiohttp",
+    "aiofiles",
+    "streamlit",
+    "openpyxl",
+    "pyarrow",
+    "fastapi",
+    "uvicorn",
+    "psutil",
+    "duckdb",
+]
+
+[project.optional-dependencies]
+s3 = [
+    "boto3",
+]
+gdrive = [
+    "google-api-python-client",
+    "google-auth-oauthlib",
+]
+cloud = [
+    "boto3",
+    "google-api-python-client",
+    "google-auth-oauthlib",
+]
+
+[tool.uv]
+package = false

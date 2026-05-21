@@ -1,5 +1,3 @@
-version: '3.8'
-
 # Reddit Scraper Suite - Full Stack
 # Start with: docker-compose up -d
 

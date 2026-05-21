@@ -2,8 +2,7 @@
 REST API Module - Expose Reddit Scraper data as a REST API
 For integration with Metabase, Grafana, DreamFactory, and other tools.
 
-Start with: python api/server.py
-Or: uvicorn api.server:app --reload --port 8000
+Start with: uv run python main.py --api
 """
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware

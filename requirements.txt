@@ -1,22 +1,6 @@
-# Core
-pandas
-requests
-
-# Async
-aiohttp
-aiofiles
-
-# Dashboard
-streamlit
-
-# Export
-openpyxl
-pyarrow
-
-# REST API
-fastapi
-uvicorn
-
-# System & Analytics
-psutil
-duckdb
+# Legacy compatibility note.
+#
+# Runtime dependencies are declared in pyproject.toml and locked in uv.lock.
+# Install the project environment with:
+#
+#   uv sync

@@ -8,10 +8,10 @@ Connect Metabase, Grafana, DreamFactory, or any REST client to your Reddit scrap
 
 ```powershell
 # Install dependencies
-pip install fastapi uvicorn
+uv sync
 
 # Start the API server
-python main.py --api
+uv run python main.py --api
 ```
 
 The API will be available at `http://localhost:8000`
@@ -36,7 +36,7 @@ The API will be available at `http://localhost:8000`
 
 ## Metabase Setup
 
-1. Start API: `python main.py --api`
+1. Start API: `uv run python main.py --api`
 2. In Metabase, add a new "HTTP" question
 3. Use `http://localhost:8000/posts?limit=1000` 
 4. Or use `/query?sql=SELECT * FROM posts` for custom queries
@@ -76,7 +76,6 @@ curl "http://localhost:8000/query?sql=SELECT title, score FROM posts ORDER BY sc
 ## Docker Compose (All-in-One)
 
 ```yaml
-version: '3'
 services:
   scraper-api:
     build: .
@@ -84,7 +83,7 @@ services:
       - "8000:8000"
     volumes:
       - ./data:/app/data
-    command: python main.py --api
+    command: ["--api"]
 
   metabase:
     image: metabase/metabase

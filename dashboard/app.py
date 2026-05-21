@@ -1,6 +1,6 @@
 """
 Reddit Scraper Dashboard - Streamlit Web UI
-Run with: streamlit run dashboard/app.py
+Run with: uv run streamlit run dashboard/app.py
 """
 import streamlit as st
 import pandas as pd
@@ -764,7 +764,7 @@ def main():
         with tool_tabs[0]:
             st.markdown("""
             **Metabase Setup:**
-            1. Start API: `python main.py --api`
+            1. Start API: `uv run python main.py --api`
             2. In Metabase: New Question → Native Query
             3. Use HTTP datasource with `http://localhost:8000`
             4. Query: `/posts?subreddit=python&limit=100`
@@ -920,7 +920,7 @@ def main():
                     status = "✅" if plugin.enabled else "❌"
                     st.markdown(f"{status} **{plugin.name}** - {plugin.description}")
                 
-                st.info("💡 Enable plugins when scraping: `python main.py <target> --plugins`")
+                st.info("💡 Enable plugins when scraping: `uv run python main.py <target> --plugins`")
             else:
                 st.warning("No plugins found in plugins/ directory")
         except Exception as e:
@@ -932,19 +932,19 @@ def main():
         st.subheader("📋 Quick Commands")
         st.code("""
 # Start REST API
-python main.py --api
+uv run python main.py --api
 
 # Export to Parquet
-python main.py --export-parquet <subreddit>
+uv run python main.py --export-parquet <subreddit>
 
 # Backup database
-python main.py --backup
+uv run python main.py --backup
 
 # Scrape with plugins
-python main.py <target> --plugins
+uv run python main.py <target> --plugins
 
 # Dry run (test without saving)
-python main.py <target> --dry-run
+uv run python main.py <target> --dry-run
         """, language="bash")
 
 if __name__ == "__main__":

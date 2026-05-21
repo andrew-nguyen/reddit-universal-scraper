@@ -38,7 +38,7 @@ class S3Uploader:
             region: AWS region
         """
         if not HAS_BOTO3:
-            raise ImportError("boto3 not installed. Run: pip install boto3")
+            raise ImportError("boto3 not installed. Run: uv sync --extra s3 or uv sync --extra cloud")
         
         self.bucket_name = bucket_name
         self.region = region
@@ -169,7 +169,7 @@ class GDriveUploader:
             token_file: Path to token JSON
         """
         if not HAS_GDRIVE:
-            raise ImportError("Google API client not installed. Run: pip install google-api-python-client google-auth-oauthlib")
+            raise ImportError("Google API client not installed. Run: uv sync --extra gdrive or uv sync --extra cloud")
         
         self.credentials_file = credentials_file
         self.token_file = token_file

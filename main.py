@@ -659,35 +659,35 @@ def main():
         epilog="""
 Commands:
   SCRAPING:
-    python main.py <target> --mode full --limit 100
-    python main.py <target> --mode history --limit 500
-    python main.py <target> --mode monitor
-    python main.py <target> --dry-run           # Test without saving
-    python main.py <target> --plugins           # Enable post-processing
+    uv run python main.py <target> --mode full --limit 100
+    uv run python main.py <target> --mode history --limit 500
+    uv run python main.py <target> --mode monitor
+    uv run python main.py <target> --dry-run           # Test without saving
+    uv run python main.py <target> --plugins           # Enable post-processing
     
   SEARCH:
-    python main.py --search "keyword" --subreddit delhi
-    python main.py --search "keyword" --min-score 100
+    uv run python main.py --search "keyword" --subreddit delhi
+    uv run python main.py --search "keyword" --min-score 100
     
   DASHBOARD:
-    python main.py --dashboard
+    uv run python main.py --dashboard
     
   SCHEDULE:
-    python main.py --schedule delhi --every 60
+    uv run python main.py --schedule delhi --every 60
     
   ANALYTICS:
-    python main.py --analyze delhi --sentiment
-    python main.py --analyze delhi --keywords
+    uv run python main.py --analyze delhi --sentiment
+    uv run python main.py --analyze delhi --keywords
     
   MAINTENANCE:
-    python main.py --job-history                # View job history
-    python main.py --backup                     # Backup database
-    python main.py --vacuum                     # Optimize database
-    python main.py --export-parquet python      # Export to Parquet
-    python main.py --list-plugins               # List available plugins
+    uv run python main.py --job-history                # View job history
+    uv run python main.py --backup                     # Backup database
+    uv run python main.py --vacuum                     # Optimize database
+    uv run python main.py --export-parquet python      # Export to Parquet
+    uv run python main.py --list-plugins               # List available plugins
     
   REST API:
-    python main.py --api                        # Start REST API server
+    uv run python main.py --api                        # Start REST API server
         """
     )
     
@@ -756,7 +756,7 @@ Commands:
             from api.server import app
             uvicorn.run(app, host="0.0.0.0", port=8000)
         except ImportError:
-            print("❌ Install dependencies: pip install fastapi uvicorn")
+            print("❌ Install dependencies: uv sync")
         return
     
     # --- NEW: Maintenance & Observability Commands ---

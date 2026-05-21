@@ -21,7 +21,7 @@ def export_to_parquet(subreddit, output_dir=None, prefix="r"):
     try:
         import pyarrow
     except ImportError:
-        raise ImportError("pyarrow required for Parquet export. Run: pip install pyarrow")
+        raise ImportError("pyarrow required for Parquet export. Run: uv sync")
     
     # Setup paths
     data_dir = Path(f"data/{prefix}_{subreddit}")
@@ -99,7 +99,7 @@ def export_database_to_parquet(output_dir=None):
     try:
         import pyarrow
     except ImportError:
-        raise ImportError("pyarrow required. Run: pip install pyarrow")
+        raise ImportError("pyarrow required. Run: uv sync")
     
     from export.database import get_connection
     

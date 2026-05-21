@@ -1,8 +1,13 @@
 FROM python:3.11-slim
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
+ENV UV_NO_DEV=1
 
 WORKDIR /app
 
@@ -12,9 +17,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy dependency metadata first for better caching
+COPY pyproject.toml uv.lock ./
+RUN uv sync --locked --no-install-project
 
 # Copy all source code
 COPY main.py .
@@ -30,6 +35,8 @@ COPY plugins/ ./plugins/
 COPY api/ ./api/
 COPY docs/ ./docs/
 
+RUN uv sync --locked --no-dev
+
 # Create data directory with subdirectories
 RUN mkdir -p data/backups data/parquet
 
@@ -43,4 +50,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
 # Default: show help
-ENTRYPOINT ["python", "main.py"]
+ENTRYPOINT ["uv", "run", "--locked", "python", "main.py"]
