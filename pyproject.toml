@@ -1,6 +1,6 @@
 [project]
 name = "reddit-universal-scraper"
-version = "0.1.0"
+version = "0.1.1"
 description = "A full-featured Reddit scraper with analytics dashboard, REST API, scheduled scraping, plugins, and more."
 readme = "README.md"
 requires-python = ">=3.10"
