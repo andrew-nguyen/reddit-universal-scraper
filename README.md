@@ -1,6 +1,6 @@
 # 🤖 Universal Reddit Scraper Suite
 
-[![Docker Build & Publish](https://github.com/ksanjeev284/reddit-universal-scraper/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/ksanjeev284/reddit-universal-scraper/actions/workflows/docker-publish.yml)
+[![Docker Build & Publish](https://github.com/andrew-nguyen/reddit-universal-scraper/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/andrew-nguyen/reddit-universal-scraper/actions/workflows/docker-publish.yml)
 
 A **full-featured** Reddit scraper with analytics dashboard, REST API, scheduled scraping, plugins, and more. **No API keys required!**
 
@@ -84,7 +84,7 @@ uv run python main.py delhi --no-comments --limit 200
 Install the repository into another project, then import the synchronous scraper API:
 
 ```bash
-uv add git+https://github.com/ksanjeev284/reddit-universal-scraper.git
+uv add git+https://github.com/andrew-nguyen/reddit-universal-scraper.git
 ```
 
 ```python
@@ -263,7 +263,7 @@ docker-compose up -d
 ssh user@your-server-ip
 
 # Clone repo
-git clone https://github.com/ksanjeev284/reddit-universal-scraper.git
+git clone https://github.com/andrew-nguyen/reddit-universal-scraper.git
 cd reddit-universal-scraper
 
 # Start services

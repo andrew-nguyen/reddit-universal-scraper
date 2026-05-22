@@ -12,7 +12,7 @@
 
 I built a **complete Reddit scraper suite** that requires **zero API keys**. It comes with a beautiful Streamlit dashboard, REST API for integration with tools like Grafana and Metabase, plugin system for post-processing, scheduled scraping, notifications, and much more. Best of all—it's completely open source.
 
-🔗 **GitHub**: [reddit-universal-scraper](https://github.com/ksanjeev284/reddit-universal-scraper)
+🔗 **GitHub**: [reddit-universal-scraper](https://github.com/andrew-nguyen/reddit-universal-scraper)
 
 ---
 
@@ -331,7 +331,7 @@ This spins up:
 
 ```bash
 ssh user@your-server-ip
-git clone https://github.com/ksanjeev284/reddit-universal-scraper.git
+git clone https://github.com/andrew-nguyen/reddit-universal-scraper.git
 cd reddit-universal-scraper
 docker-compose up -d
 ```
@@ -485,7 +485,7 @@ I'm actively developing new features:
 
 ```bash
 # Clone the repo
-git clone https://github.com/ksanjeev284/reddit-universal-scraper.git
+git clone https://github.com/andrew-nguyen/reddit-universal-scraper.git
 cd reddit-universal-scraper
 
 # Install dependencies
@@ -510,7 +510,7 @@ This is an open-source project and contributions are welcome! Whether it's:
 - Documentation improvements
 - Feature suggestions
 
-Open an issue or submit a PR on [GitHub](https://github.com/ksanjeev284/reddit-universal-scraper).
+Open an issue or submit a PR on [GitHub](https://github.com/andrew-nguyen/reddit-universal-scraper).
 
 ---
 
@@ -522,14 +522,14 @@ The Universal Reddit Scraper Suite represents months of work solving a problem t
 
 ---
 
-*If you found this useful, consider giving the project a ⭐ on [GitHub](https://github.com/ksanjeev284/reddit-universal-scraper)!*
+*If you found this useful, consider giving the project a ⭐ on [GitHub](https://github.com/andrew-nguyen/reddit-universal-scraper)!*
 
 ---
 
 ## Connect
 
-- **GitHub**: [@ksanjeev284](https://github.com/ksanjeev284)
-- **Project**: [reddit-universal-scraper](https://github.com/ksanjeev284/reddit-universal-scraper)
+- **GitHub**: [@andrew-nguyen](https://github.com/andrew-nguyen)
+- **Project**: [reddit-universal-scraper](https://github.com/andrew-nguyen/reddit-universal-scraper)
 
 ---
 
