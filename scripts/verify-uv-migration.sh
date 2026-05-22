@@ -24,6 +24,12 @@ uv sync --locked
 log "importing default dependencies"
 uv run python -c "import pandas, requests, aiohttp, aiofiles, streamlit, openpyxl, pyarrow, fastapi, uvicorn, psutil, duckdb"
 
+log "importing scraper package"
+uv run python -c "from reddit_universal_scraper import RedditScraper, ScrapeOptions, ScrapeResult; print(RedditScraper.__name__)"
+
+log "running unit tests"
+uv run pytest
+
 log "checking CLI help"
 uv run python main.py --help >/dev/null
 
@@ -35,6 +41,9 @@ uv run python -c "from api.server import app; print(app.title)"
 
 log "checking parquet export import"
 uv run python -c "from export.parquet import export_to_parquet; print(export_to_parquet.__name__)"
+
+log "building package"
+uv build
 
 if [[ "${RUN_DOCKER:-0}" == "1" ]]; then
   log "building Docker image"

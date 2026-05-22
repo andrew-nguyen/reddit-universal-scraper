@@ -18,6 +18,36 @@ The API will be available at `http://localhost:8000`
 
 ---
 
+## Python Embedding
+
+Use the package API when another Python project needs to run scrapes directly instead of shelling out to `main.py`:
+
+```python
+from reddit_universal_scraper import RedditScraper
+
+scraper = RedditScraper(data_dir="data")
+result = scraper.scrape("delhi", mode="full", limit=100)
+
+print(result.posts_count)
+print(result.output_paths.posts)
+```
+
+Common CLI-equivalent calls:
+
+```python
+scraper.scrape("delhi", mode="history", limit=500)
+scraper.scrape("spez", is_user=True, mode="full", limit=50)
+scraper.scrape("delhi", mode="full", limit=200, download_media=False)
+scraper.scrape("delhi", mode="full", limit=200, scrape_comments=False)
+
+for result in scraper.monitor("delhi", interval_seconds=300, max_iterations=1):
+    print(result.posts_count)
+```
+
+The monitor iterator also accepts a `stop_event` for long-running embedded workers.
+
+---
+
 ## API Endpoints
 
 | Endpoint | Description |

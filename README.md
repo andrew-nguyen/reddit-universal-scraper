@@ -79,6 +79,32 @@ uv run python main.py delhi --no-media --limit 200
 uv run python main.py delhi --no-comments --limit 200
 ```
 
+### 🐍 Python API
+
+Install the repository into another project, then import the synchronous scraper API:
+
+```bash
+uv add git+https://github.com/ksanjeev284/reddit-universal-scraper.git
+```
+
+```python
+from reddit_universal_scraper import RedditScraper
+
+scraper = RedditScraper(data_dir="data")
+
+scraper.scrape("delhi", mode="full", limit=100)
+scraper.scrape("delhi", mode="history", limit=500)
+
+for result in scraper.monitor("delhi", interval_seconds=300):
+    print(result.posts_count)
+
+scraper.scrape("spez", is_user=True, mode="full", limit=50)
+scraper.scrape("delhi", mode="full", limit=200, download_media=False)
+scraper.scrape("delhi", mode="full", limit=200, scrape_comments=False)
+```
+
+`scrape()` returns a `ScrapeResult` with post/comment/media counts, duration, output paths, job id, warnings/errors, and current-run records. For embedded monitor loops, use `max_iterations` for bounded runs or pass a `stop_event`.
+
 ### 🧪 Dry Run Mode
 
 Test scrape rules without saving any data:

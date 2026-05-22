@@ -81,19 +81,19 @@ class CronScheduler:
     
     def _run_job(self, job):
         """Execute a single job."""
-        # Import here to avoid circular imports
         try:
-            from main import run_full_history
+            from reddit_universal_scraper import RedditScraper
             
             prefix = "u/" if job['is_user'] else "r/"
             print(f"\n🚀 Running scheduled job: {prefix}{job['target']}")
             
-            run_full_history(
+            RedditScraper().scrape(
                 job['target'],
-                job['limit'],
-                job['is_user'],
-                download_media_flag=(job['mode'] == 'full'),
-                scrape_comments_flag=(job['mode'] == 'full')
+                mode=job['mode'],
+                limit=job['limit'],
+                is_user=job['is_user'],
+                download_media=(job['mode'] == 'full'),
+                scrape_comments=(job['mode'] == 'full')
             )
             
             job['last_run'] = datetime.now()
@@ -185,13 +185,14 @@ def run_scheduled(target, interval_minutes, mode='full', limit=100, is_user=Fals
         limit: Post limit per run
         is_user: True if target is a user
     """
-    from main import run_full_history
+    from reddit_universal_scraper import RedditScraper
     
     prefix = "u/" if is_user else "r/"
     print(f"📅 Scheduled: {prefix}{target} every {interval_minutes} minutes")
     print("Press Ctrl+C to stop\n")
     
     run_count = 0
+    scraper = RedditScraper()
     
     try:
         while True:
@@ -200,12 +201,13 @@ def run_scheduled(target, interval_minutes, mode='full', limit=100, is_user=Fals
             print(f"🔄 Run #{run_count} - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
             print(f"{'='*50}")
             
-            run_full_history(
+            scraper.scrape(
                 target,
-                limit,
-                is_user,
-                download_media_flag=(mode == 'full'),
-                scrape_comments_flag=(mode == 'full')
+                mode=mode,
+                limit=limit,
+                is_user=is_user,
+                download_media=(mode == 'full'),
+                scrape_comments=(mode == 'full')
             )
             
             print(f"\n⏰ Next run in {interval_minutes} minutes...")

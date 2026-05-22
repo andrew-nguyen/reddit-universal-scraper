@@ -20,6 +20,10 @@ dependencies = [
     "duckdb",
 ]
 
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
 [project.optional-dependencies]
 s3 = [
     "boto3",
@@ -34,5 +38,11 @@ cloud = [
     "google-auth-oauthlib",
 ]
 
-[tool.uv]
-package = false
+[tool.hatch.build.targets.wheel]
+packages = ["reddit_universal_scraper"]
+
+[dependency-groups]
+dev = [
+    "hatchling>=1.27",
+    "pytest>=8.0",
+]
