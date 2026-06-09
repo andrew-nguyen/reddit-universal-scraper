@@ -1,7 +1,7 @@
 import datetime
 
-import main
 from reddit_universal_scraper import extractors
+from reddit_universal_scraper import cli as main
 
 
 def make_post(**overrides):

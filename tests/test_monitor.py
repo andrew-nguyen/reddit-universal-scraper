@@ -1,6 +1,6 @@
 import pandas as pd
 
-import main
+from reddit_universal_scraper import cli as main
 from reddit_universal_scraper import RedditScraper
 from reddit_universal_scraper.client import RedditClient
 from reddit_universal_scraper.comments import CommentFetcher
@@ -170,7 +170,7 @@ def test_cli_monitor_interrupt(monkeypatch):
             calls.append((target, is_user, interval_seconds, max_iterations, stop_event))
             raise KeyboardInterrupt
 
-    monkeypatch.setattr(main.sys, "argv", ["main.py", "delhi", "--mode", "monitor"])
+    monkeypatch.setattr(main.sys, "argv", ["uv_main.py", "delhi", "--mode", "monitor"])
     monkeypatch.setattr(main._service, "RedditScraper", lambda: FakeScraper())
 
     main.main()

@@ -11,7 +11,7 @@ Connect Metabase, Grafana, DreamFactory, or any REST client to your Reddit scrap
 uv sync
 
 # Start the API server
-uv run python main.py --api
+uv run python uv_main.py --api
 ```
 
 The API will be available at `http://localhost:8000`
@@ -20,7 +20,7 @@ The API will be available at `http://localhost:8000`
 
 ## Python Embedding
 
-Use the package API when another Python project needs to run scrapes directly instead of shelling out to `main.py`:
+Use the package API when another Python project needs to run scrapes directly instead of shelling out to `uv_main.py`:
 
 ```python
 from reddit_universal_scraper import RedditScraper
@@ -66,7 +66,7 @@ The monitor iterator also accepts a `stop_event` for long-running embedded worke
 
 ## Metabase Setup
 
-1. Start API: `uv run python main.py --api`
+1. Start API: `uv run python uv_main.py --api`
 2. In Metabase, add a new "HTTP" question
 3. Use `http://localhost:8000/posts?limit=1000` 
 4. Or use `/query?sql=SELECT * FROM posts` for custom queries

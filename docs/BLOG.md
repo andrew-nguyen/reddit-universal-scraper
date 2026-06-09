@@ -76,19 +76,19 @@ The scraper operates in three modes:
 
 **1. Full Mode** - The complete package
 ```bash
-uv run python main.py python --mode full --limit 100
+uv run python uv_main.py python --mode full --limit 100
 ```
 This scrapes posts, downloads all media (images, videos, galleries), and fetches comments with their full thread hierarchy.
 
 **2. History Mode** - Fast metadata-only
 ```bash
-uv run python main.py python --mode history --limit 500
+uv run python uv_main.py python --mode history --limit 500
 ```
 Perfect for quickly building a dataset of post metadata without the overhead of media downloads.
 
 **3. Monitor Mode** - Live watching
 ```bash
-uv run python main.py python --mode monitor
+uv run python uv_main.py python --mode monitor
 ```
 Continuously checks for new posts every 5 minutes. Ideal for tracking breaking news or trending discussions.
 
@@ -209,7 +209,7 @@ class MyCustomPlugin(Plugin):
 
 Enable plugins during scraping:
 ```bash
-uv run python main.py python --mode full --plugins
+uv run python uv_main.py python --mode full --plugins
 ```
 
 ---
@@ -219,7 +219,7 @@ uv run python main.py python --mode full --plugins
 The REST API opens up the scraper to a whole ecosystem of tools:
 
 ```bash
-uv run python main.py --api
+uv run python uv_main.py --api
 # API at http://localhost:8000
 # Docs at http://localhost:8000/docs
 ```
@@ -258,10 +258,10 @@ Set up recurring scrapes with cron-style scheduling:
 
 ```bash
 # Scrape every 60 minutes
-uv run python main.py --schedule delhi --every 60
+uv run python uv_main.py --schedule delhi --every 60
 
 # With custom options
-uv run python main.py --schedule delhi --every 30 --mode full --limit 50
+uv run python uv_main.py --schedule delhi --every 30 --mode full --limit 50
 ```
 
 ### Get Notified
@@ -284,7 +284,7 @@ Now you get notified with scrape summaries directly in your preferred platform.
 One of my favorite features is **dry run mode**. It simulates the entire scrape without saving any data:
 
 ```bash
-uv run python main.py python --mode full --limit 50 --dry-run
+uv run python uv_main.py python --mode full --limit 50 --dry-run
 ```
 
 Output:
@@ -357,7 +357,7 @@ All scraped data is saved as CSV files:
 Export to columnar format for analytics tools:
 
 ```bash
-uv run python main.py --export-parquet python
+uv run python uv_main.py --export-parquet python
 ```
 
 Query directly with DuckDB:
@@ -370,13 +370,13 @@ duckdb.query("SELECT * FROM 'data/parquet/*.parquet'").df()
 
 ```bash
 # Backup
-uv run python main.py --backup
+uv run python uv_main.py --backup
 
 # Optimize/vacuum
-uv run python main.py --vacuum
+uv run python uv_main.py --vacuum
 
 # View job history
-uv run python main.py --job-history
+uv run python uv_main.py --job-history
 ```
 
 ---
@@ -492,10 +492,10 @@ cd reddit-universal-scraper
 uv sync
 
 # Your first scrape
-uv run python main.py python --mode full --limit 50
+uv run python uv_main.py python --mode full --limit 50
 
 # Launch the dashboard
-uv run python main.py --dashboard
+uv run python uv_main.py --dashboard
 ```
 
 That's it! You're now scraping Reddit like a pro.

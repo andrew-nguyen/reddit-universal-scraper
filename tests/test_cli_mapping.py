@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-import main
+from reddit_universal_scraper import cli as main
 
 
 def run_cli(monkeypatch, argv):
@@ -13,7 +13,7 @@ def run_cli(monkeypatch, argv):
         calls.append(("full_history", args, kwargs))
         return {"posts": 0}
 
-    monkeypatch.setattr(sys, "argv", ["main.py", *argv])
+    monkeypatch.setattr(sys, "argv", ["uv_main.py", *argv])
     monkeypatch.setattr(main, "run_full_history", fake_run_full_history)
 
     main.main()
@@ -69,7 +69,7 @@ def test_monitor_mode_uses_300_second_interval(monkeypatch):
             monitor_calls.append((target, is_user, interval_seconds, max_iterations, stop_event))
             return iter(())
 
-    monkeypatch.setattr(sys, "argv", ["main.py", "delhi", "--mode", "monitor"])
+    monkeypatch.setattr(sys, "argv", ["uv_main.py", "delhi", "--mode", "monitor"])
     monkeypatch.setattr(main._service, "RedditScraper", lambda: FakeScraper())
 
     main.main()
@@ -117,7 +117,7 @@ def test_documented_examples(monkeypatch, argv, expected_args, expected_kwargs):
 
 def test_help_flags():
     result = subprocess.run(
-        [sys.executable, "main.py", "--help"],
+        [sys.executable, "uv_main.py", "--help"],
         check=True,
         capture_output=True,
         text=True,
@@ -125,6 +125,7 @@ def test_help_flags():
 
     for flag in ["--mode", "--user", "--limit", "--no-media", "--no-comments"]:
         assert flag in result.stdout
+    assert "uv run python uv_main.py" in result.stdout
 
 
 def test_main_compatibility_wrappers_delegate_to_package(monkeypatch):

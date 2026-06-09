@@ -31,10 +31,10 @@ A **full-featured** Reddit scraper with analytics dashboard, REST API, scheduled
 uv sync
 
 # Scrape a subreddit
-uv run python main.py python --mode full --limit 100
+uv run python uv_main.py python --mode full --limit 100
 
 # Launch dashboard
-uv run python main.py --dashboard
+uv run python uv_main.py --dashboard
 # Opens at http://localhost:8501
 ```
 
@@ -63,20 +63,20 @@ sudo apt install ffmpeg
 
 ```bash
 # Full scrape (posts + media + comments)
-uv run python main.py delhi --mode full --limit 100
+uv run python uv_main.py delhi --mode full --limit 100
 
 # Fast history-only (no media/comments)
-uv run python main.py delhi --mode history --limit 500
+uv run python uv_main.py delhi --mode history --limit 500
 
 # Live monitor (checks every 5 min)
-uv run python main.py delhi --mode monitor
+uv run python uv_main.py delhi --mode monitor
 
 # Scrape a user's posts
-uv run python main.py spez --user --mode full --limit 50
+uv run python uv_main.py spez --user --mode full --limit 50
 
 # Skip media or comments
-uv run python main.py delhi --no-media --limit 200
-uv run python main.py delhi --no-comments --limit 200
+uv run python uv_main.py delhi --no-media --limit 200
+uv run python uv_main.py delhi --no-comments --limit 200
 ```
 
 ### 🐍 Python API
@@ -110,7 +110,7 @@ scraper.scrape("delhi", mode="full", limit=200, scrape_comments=False)
 Test scrape rules without saving any data:
 
 ```bash
-uv run python main.py python --mode full --limit 50 --dry-run
+uv run python uv_main.py python --mode full --limit 50 --dry-run
 ```
 
 Output:
@@ -127,10 +127,10 @@ Enable post-processing plugins:
 
 ```bash
 # List available plugins
-uv run python main.py --list-plugins
+uv run python uv_main.py --list-plugins
 
 # Run with plugins enabled
-uv run python main.py python --mode full --plugins
+uv run python uv_main.py python --mode full --plugins
 ```
 
 **Built-in Plugins:**
@@ -145,7 +145,7 @@ Create custom plugins in `plugins/` folder.
 ### 📊 Dashboard
 
 ```bash
-uv run python main.py --dashboard
+uv run python uv_main.py --dashboard
 # Opens at http://localhost:8501
 ```
 
@@ -161,7 +161,7 @@ uv run python main.py --dashboard
 ### 🚀 REST API
 
 ```bash
-uv run python main.py --api
+uv run python uv_main.py --api
 # API at http://localhost:8000
 # Docs at http://localhost:8000/docs
 ```
@@ -180,16 +180,16 @@ uv run python main.py --api
 
 ```bash
 # Export to Parquet (for DuckDB/warehouses)
-uv run python main.py --export-parquet python
+uv run python uv_main.py --export-parquet python
 
 # View job history
-uv run python main.py --job-history
+uv run python uv_main.py --job-history
 
 # Backup database
-uv run python main.py --backup
+uv run python uv_main.py --backup
 
 # Optimize database
-uv run python main.py --vacuum
+uv run python uv_main.py --vacuum
 ```
 
 Optional cloud upload dependencies:
@@ -209,23 +209,23 @@ uv sync --extra cloud
 
 ```bash
 # Scrape every 60 minutes
-uv run python main.py --schedule delhi --every 60
+uv run python uv_main.py --schedule delhi --every 60
 
 # With options
-uv run python main.py --schedule delhi --every 30 --mode full --limit 50
+uv run python uv_main.py --schedule delhi --every 30 --mode full --limit 50
 ```
 
 ### 🔍 Search & Analytics
 
 ```bash
 # Search scraped data
-uv run python main.py --search "credit card" --min-score 100
+uv run python uv_main.py --search "credit card" --min-score 100
 
 # Run sentiment analysis
-uv run python main.py --analyze delhi --sentiment
+uv run python uv_main.py --analyze delhi --sentiment
 
 # Extract keywords
-uv run python main.py --analyze delhi --keywords
+uv run python uv_main.py --analyze delhi --keywords
 ```
 
 ---
@@ -284,7 +284,7 @@ Access:
 
 ### Metabase
 
-1. Start API: `uv run python main.py --api`
+1. Start API: `uv run python uv_main.py --api`
 2. Add HTTP datasource: `http://localhost:8000`
 3. Query: `/posts?subreddit=python&limit=100`
 
@@ -300,7 +300,7 @@ Access:
 import duckdb
 
 # Export to Parquet first
-# uv run python main.py --export-parquet python
+# uv run python uv_main.py --export-parquet python
 
 # Query directly
 duckdb.query("SELECT * FROM 'data/parquet/*.parquet'").df()
@@ -312,7 +312,8 @@ duckdb.query("SELECT * FROM 'data/parquet/*.parquet'").df()
 
 ```
 reddit-scraper/
-├── main.py              # CLI entry point
+├── uv_main.py           # fork-owned CLI entry point
+├── main.py              # upstream-owned legacy entry point
 ├── config.py            # Settings
 ├── analytics/           # Sentiment & keywords
 ├── alerts/              # Discord/Telegram

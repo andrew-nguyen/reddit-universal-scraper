@@ -4,7 +4,7 @@ from types import SimpleNamespace
 import pandas as pd
 import pytest
 
-import main
+from reddit_universal_scraper import cli as main
 from reddit_universal_scraper import RedditScraper, ScrapeMode
 from reddit_universal_scraper.models import MediaCounts
 from reddit_universal_scraper.media import MediaDownloader

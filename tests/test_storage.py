@@ -1,6 +1,6 @@
 import pandas as pd
 
-import main
+from reddit_universal_scraper import cli as main
 from reddit_universal_scraper.storage import ScraperStorage, setup_directories as package_setup_directories
 
 

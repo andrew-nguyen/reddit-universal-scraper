@@ -45,7 +45,7 @@ def test_readme_cli_examples_use_supported_scrape_flags():
     scrape_commands = [
         line.strip()
         for line in scraping_section.splitlines()
-        if line.strip().startswith("uv run python main.py")
+        if line.strip().startswith("uv run python uv_main.py")
     ]
 
     assert scrape_commands

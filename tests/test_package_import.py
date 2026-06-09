@@ -76,7 +76,9 @@ def test_wheel_contents(tmp_path):
         names = set(wheel.namelist())
 
     assert "reddit_universal_scraper/__init__.py" in names
+    assert "reddit_universal_scraper/cli.py" in names
     assert "reddit_universal_scraper/models.py" in names
+    assert any(name.endswith(".dist-info/entry_points.txt") for name in names)
     assert not any(name.startswith("data/") for name in names)
     assert not any(name.startswith("thoughts/") for name in names)
     assert not any(name.startswith("runtime/") for name in names)

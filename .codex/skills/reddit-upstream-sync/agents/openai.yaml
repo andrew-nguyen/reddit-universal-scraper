@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reddit Upstream Sync"
+  short_description: "Sync this fork with upstream safely."
+  default_prompt: "Use $reddit-upstream-sync to merge upstream into reddit-universal-scraper while preserving the fork-owned uv/package CLI architecture."
