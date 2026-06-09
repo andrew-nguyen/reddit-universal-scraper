@@ -18,6 +18,7 @@ dependencies = [
     "uvicorn",
     "psutil",
     "duckdb",
+    "defusedxml",
 ]
 
 [project.scripts]

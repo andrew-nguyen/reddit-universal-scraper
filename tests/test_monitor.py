@@ -1,9 +1,12 @@
+import os
+
 import pandas as pd
 
 from reddit_universal_scraper import cli as main
 from reddit_universal_scraper import RedditScraper
 from reddit_universal_scraper.client import RedditClient
 from reddit_universal_scraper.comments import CommentFetcher
+from reddit_universal_scraper.settings import get_formatted_proxy_url
 
 
 class FakeResponse:
@@ -98,6 +101,44 @@ def test_reddit_client_builds_posts_comments_and_rss_urls():
     assert session.calls[2][0] == "https://old.reddit.com/r/test/comments/post/.json?limit=100"
     assert session.calls[3][0] == "https://www.reddit.com/r/delhi/new.rss?limit=100"
     assert session.calls[4][0] == "https://www.reddit.com/user/spez/submitted.rss?limit=100"
+
+
+def test_proxy_formatter_targets_scrapingant_country_and_session():
+    proxy = "https://customer-demo:secret@datacenter.scrapingant.com:443"
+
+    formatted = get_formatted_proxy_url(proxy, country="US", session_id="sticky")
+
+    assert formatted == "https://customer-demo-country-us-sessionid-sticky:secret@datacenter.scrapingant.com:443"
+
+
+def test_settings_load_env_file_preserves_existing_environment(tmp_path, monkeypatch):
+    from reddit_universal_scraper import settings
+
+    env_file = tmp_path / ".env"
+    env_file.write_text('PROXY_URL="http://file-proxy"\nPROXY_COUNTRY=US\n', encoding="utf-8")
+    monkeypatch.setenv("PROXY_URL", "http://shell-proxy")
+    monkeypatch.delenv("PROXY_COUNTRY", raising=False)
+
+    settings.load_env_file(env_file)
+
+    assert os.environ["PROXY_URL"] == "http://shell-proxy"
+    assert os.environ["PROXY_COUNTRY"] == "US"
+
+
+def test_reddit_client_configures_proxy_on_shared_session():
+    session = FakeSession()
+    client = RedditClient(
+        session=session,
+        mirrors=["https://mirror.example"],
+        proxy_url="https://customer-demo:secret@datacenter.scrapingant.com:443",
+        proxy_country="IN",
+        proxy_session_id="abc123",
+    )
+
+    client.fetch_posts_page("delhi")
+
+    expected_proxy = "https://customer-demo-country-in-sessionid-abc123:secret@datacenter.scrapingant.com:443"
+    assert session.proxies == {"http": expected_proxy, "https": expected_proxy}
 
 
 def test_comment_fetcher_uses_shared_parser():

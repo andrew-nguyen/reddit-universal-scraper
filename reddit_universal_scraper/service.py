@@ -33,11 +33,24 @@ class RedditScraper:
         sleep: Callable[[float], None] = time.sleep,
         printer: Callable[[str], None] = print,
         shuffle: Callable[[list[str]], None] = random.shuffle,
+        proxy_url: str | None = None,
+        proxy_country: str | None = None,
+        proxy_session_id: str | None = None,
+        proxy_auto_rotate: bool | None = None,
     ):
         self.printer = printer
         self.sleep = sleep
         self.shuffle = shuffle
-        self.client = client or RedditClient()
+        client_kwargs = {}
+        if proxy_url is not None:
+            client_kwargs["proxy_url"] = proxy_url
+        if proxy_country is not None:
+            client_kwargs["proxy_country"] = proxy_country
+        if proxy_session_id is not None:
+            client_kwargs["proxy_session_id"] = proxy_session_id
+        if proxy_auto_rotate is not None:
+            client_kwargs["proxy_auto_rotate"] = proxy_auto_rotate
+        self.client = client or RedditClient(**client_kwargs)
         self.storage = storage or ScraperStorage(data_dir, printer=printer)
         self.media_downloader = media_downloader or MediaDownloader(session=getattr(self.client, "session", None), printer=printer)
         self.comment_fetcher = comment_fetcher or CommentFetcher(self.client)

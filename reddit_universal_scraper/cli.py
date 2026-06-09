@@ -17,7 +17,7 @@ from reddit_universal_scraper import extractors as _extractors
 from reddit_universal_scraper import media as _media
 from reddit_universal_scraper import service as _service
 from reddit_universal_scraper import storage as _storage
-from reddit_universal_scraper.settings import MIRRORS, USER_AGENT
+from reddit_universal_scraper.settings import MIRRORS, PROXY_URL, USER_AGENT
 
 
 _LEGACY_STORAGE = _storage.ScraperStorage()
@@ -99,10 +99,22 @@ def run_monitor(target, is_user=False):
 
 
 def run_full_history(target, limit, is_user=False, download_media_flag=True,
-                     scrape_comments_flag=True, dry_run=False, use_plugins=False):
+                     scrape_comments_flag=True, dry_run=False, use_plugins=False,
+                     proxy_url=None, proxy_country=None, proxy_session_id=None,
+                     proxy_auto_rotate=None):
     """Compatibility wrapper for the importable scraper service."""
     mode = "history" if not download_media_flag and not scrape_comments_flag else "full"
-    result = _service.RedditScraper().scrape(
+    scraper_kwargs = {}
+    if proxy_url is not None:
+        scraper_kwargs["proxy_url"] = proxy_url
+    if proxy_country is not None:
+        scraper_kwargs["proxy_country"] = proxy_country
+    if proxy_session_id is not None:
+        scraper_kwargs["proxy_session_id"] = proxy_session_id
+    if proxy_auto_rotate is not None:
+        scraper_kwargs["proxy_auto_rotate"] = proxy_auto_rotate
+
+    result = _service.RedditScraper(**scraper_kwargs).scrape(
         target,
         mode=mode,
         limit=limit,
@@ -196,16 +208,54 @@ Commands:
     parser.add_argument("--vacuum", action="store_true", help="Optimize SQLite database")
     parser.add_argument("--export-parquet", type=str, help="Export subreddit to Parquet format")
     parser.add_argument("--api", action="store_true", help="Start REST API server (port 8000)")
+    parser.add_argument("--proxy", type=str, help="Proxy URL (e.g. http://username:password@host:port)")
+    parser.add_argument("--proxy-country", type=str, help="Target country code for ScrapingAnt proxies")
+    parser.add_argument("--proxy-session", type=str, help="Sticky session ID for ScrapingAnt proxies")
+    parser.add_argument("--no-proxy-rotate", action="store_true", help="Disable automatic proxy session rotation")
     return parser
+
+
+def _proxy_kwargs_from_args(args):
+    kwargs = {}
+    if args.proxy is not None:
+        kwargs["proxy_url"] = args.proxy
+    if args.proxy_country is not None:
+        kwargs["proxy_country"] = args.proxy_country
+    if args.proxy_session is not None:
+        kwargs["proxy_session_id"] = args.proxy_session
+    if args.no_proxy_rotate:
+        kwargs["proxy_auto_rotate"] = False
+    return kwargs
+
+
+def _masked_proxy(proxy_url: str) -> str:
+    try:
+        from urllib.parse import urlparse
+
+        parsed = urlparse(proxy_url)
+        if parsed.username:
+            masked = f"{parsed.scheme}://{parsed.username}:*****@{parsed.hostname}"
+            if parsed.port:
+                masked += f":{parsed.port}"
+            return masked
+    except Exception:
+        return "[Invalid Proxy URL]"
+    return proxy_url
 
 
 def main(argv=None):
     parser = build_parser()
     args = parser.parse_args(argv)
+    proxy_kwargs = _proxy_kwargs_from_args(args)
 
     print("=" * 50)
     print("🤖 UNIVERSAL REDDIT SCRAPER SUITE")
     print("=" * 50)
+    proxy_display = args.proxy if args.proxy is not None else PROXY_URL
+    if proxy_display and proxy_display.lower() in {"none", "direct", "disabled"}:
+        print("🚫 Proxy explicitly disabled (Direct connection)")
+    elif proxy_display:
+        print(f"🔒 Using Proxy: {_masked_proxy(proxy_display)}")
 
     if args.dashboard:
         print("\n🌐 Launching Dashboard...")
@@ -324,7 +374,7 @@ def main(argv=None):
         prefix = "u" if args.user else "r"
         print(f"🔄 Monitoring {prefix}/{args.target} every 5 mins...")
         try:
-            for _result in _service.RedditScraper().monitor(args.target, args.user, interval_seconds=300):
+            for _result in _service.RedditScraper(**proxy_kwargs).monitor(args.target, args.user, interval_seconds=300):
                 pass
         except KeyboardInterrupt:
             print("\n🛑 Monitor stopped")
@@ -337,6 +387,7 @@ def main(argv=None):
             scrape_comments_flag=False,
             dry_run=args.dry_run,
             use_plugins=args.plugins,
+            **proxy_kwargs,
         )
     else:
         run_full_history(
@@ -347,6 +398,7 @@ def main(argv=None):
             scrape_comments_flag=not args.no_comments,
             dry_run=args.dry_run,
             use_plugins=args.plugins,
+            **proxy_kwargs,
         )
 
 

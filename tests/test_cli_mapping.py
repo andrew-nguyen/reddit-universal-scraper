@@ -61,6 +61,29 @@ def test_user_flag_maps_to_user_target(monkeypatch):
     assert calls[0][1] == ("spez", 50, True)
 
 
+def test_proxy_flags_forward_to_package_scraper(monkeypatch):
+    calls = run_cli(
+        monkeypatch,
+        [
+            "delhi",
+            "--mode",
+            "full",
+            "--proxy",
+            "https://customer-demo:secret@datacenter.scrapingant.com:443",
+            "--proxy-country",
+            "US",
+            "--proxy-session",
+            "sticky",
+            "--no-proxy-rotate",
+        ],
+    )
+
+    assert calls[0][2]["proxy_url"] == "https://customer-demo:secret@datacenter.scrapingant.com:443"
+    assert calls[0][2]["proxy_country"] == "US"
+    assert calls[0][2]["proxy_session_id"] == "sticky"
+    assert calls[0][2]["proxy_auto_rotate"] is False
+
+
 def test_monitor_mode_uses_300_second_interval(monkeypatch):
     monitor_calls = []
 
